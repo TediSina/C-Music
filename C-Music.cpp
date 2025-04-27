@@ -103,6 +103,9 @@ public:
         std::cout << "Enter file path: ";
         std::getline(std::cin, path);
 
+        path.erase(std::remove(path.begin(), path.end(), '\"'), path.end());
+        path.erase(std::remove(path.begin(), path.end(), '\''), path.end());
+
         std::cout << "Select Genre:\n";
         std::cout << "1. Rock\n";
         std::cout << "2. Pop\n";
@@ -122,7 +125,7 @@ public:
             newSong = new HipHopSong(title, artist, path);
             break;
         default:
-            std::cout << "Invalid genre. Song not added.\n";
+            std::cout << "\nInvalid genre. Song not added.\n";
             return;
         }
 
@@ -132,9 +135,10 @@ public:
 
     void listSongs() const {
         if (songs.empty()) {
-            std::cout << "No songs in the library.\n";
+            std::cout << "\nNo songs in the library.\n";
             return;
         }
+        std::cout << std::endl;
         for (size_t i = 0; i < songs.size(); ++i) {
             std::cout << i + 1 << ". ";
             songs[i]->display();
@@ -143,24 +147,43 @@ public:
 
     void playSong() const {
         if (songs.empty()) {
-            std::cout << "No songs to play.\n";
+            std::cout << "\nNo songs to play.\n";
             return;
         }
         int choice;
-        std::cout << "Enter the song number to play: ";
+        std::cout << "\nEnter the song number to play: ";
         std::cin >> choice;
         if (choice < 1 || choice > songs.size()) {
-            std::cout << "Invalid choice.\n";
+            std::cout << "\nInvalid choice.\n";
             return;
         }
         songs[choice - 1]->play();
+    }
+
+    void deleteSong() {
+        if (songs.empty()) {
+            std::cout << "\nNo songs to delete.\n";
+            return;
+        }
+        listSongs();
+        int choice;
+        std::cout << "\nEnter the song number to delete: ";
+        std::cin >> choice;
+        if (choice < 1 || choice > songs.size()) {
+            std::cout << "\nInvalid choice.\n";
+            return;
+        }
+        delete songs[choice - 1];
+        songs.erase(songs.begin() + (choice - 1));
+        saveSongs();
+        std::cout << "\nSong deleted successfully.\n";
     }
 
 private:
     void saveSongs() const {
         std::ofstream outFile(filename);
         if (!outFile) {
-            std::cout << "Error saving songs.\n";
+            std::cout << "\nError saving songs.\n";
             return;
         }
         for (const auto& song : songs) {
@@ -214,7 +237,8 @@ int main() {
         std::cout << "1. Add Song\n";
         std::cout << "2. List Songs\n";
         std::cout << "3. Play Song\n";
-        std::cout << "4. Exit\n";
+        std::cout << "4. Delete Song\n";
+        std::cout << "5. Exit\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
 
@@ -229,12 +253,15 @@ int main() {
             library.playSong();
             break;
         case 4:
-            std::cout << "Goodbye!\n";
+            library.deleteSong();
+            break;
+        case 5:
+            std::cout << "\nGoodbye!\n";
             break;
         default:
-            std::cout << "Invalid option.\n";
+            std::cout << "\nInvalid option.\n";
         }
-    } while (choice != 4);
+    } while (choice != 5);
 
     return 0;
 }
