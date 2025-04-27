@@ -1,4 +1,4 @@
-# C-Explorer
+# C-Music
 
 A console C++-based music library manager.
 
