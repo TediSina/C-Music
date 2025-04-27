@@ -145,6 +145,38 @@ public:
         }
     }
 
+    void listSongsByGenre() const {
+        if (songs.empty()) {
+            std::cout << "\nNo songs in the library.\n";
+            return;
+        }
+        int genreChoice;
+        std::cout << "\nFilter by Genre:\n";
+        std::cout << "1. Rock\n";
+        std::cout << "2. Pop\n";
+        std::cout << "3. Hip-Hop\n";
+        std::cout << "Choice: ";
+        std::cin >> genreChoice;
+        std::cout << std::endl;
+
+        bool found = false;
+        int index = 1;
+        for (const auto& song : songs) {
+            if ((genreChoice == 1 && song->getGenre() == "Rock") ||
+                (genreChoice == 2 && song->getGenre() == "Pop") ||
+                (genreChoice == 3 && song->getGenre() == "HipHop")) {
+				std::cout << index << ". ";
+                song->display();
+                found = true;
+            }
+            index++;
+        }
+
+        if (!found) {
+            std::cout << "No songs found for the selected genre.\n";
+        }
+    }
+
     void playSong() const {
         if (songs.empty()) {
             std::cout << "\nNo songs to play.\n";
@@ -235,10 +267,11 @@ int main() {
         std::cout << "-----------------\n";
         std::cout << "Select an option:\n";
         std::cout << "1. Add Song\n";
-        std::cout << "2. List Songs\n";
-        std::cout << "3. Play Song\n";
-        std::cout << "4. Delete Song\n";
-        std::cout << "5. Exit\n";
+        std::cout << "2. List All Songs\n";
+        std::cout << "3. List Songs by Genre\n";
+        std::cout << "4. Play Song\n";
+        std::cout << "5. Delete Song\n";
+        std::cout << "6. Exit\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
 
@@ -250,18 +283,21 @@ int main() {
             library.listSongs();
             break;
         case 3:
-            library.playSong();
+            library.listSongsByGenre();
             break;
         case 4:
-            library.deleteSong();
+            library.playSong();
             break;
         case 5:
+            library.deleteSong();
+            break;
+        case 6:
             std::cout << "\nGoodbye!\n";
             break;
         default:
             std::cout << "\nInvalid option.\n";
         }
-    } while (choice != 5);
+    } while (choice != 6);
 
     return 0;
 }
