@@ -446,7 +446,7 @@ int main() {
     do {
         std::cout << "\n--- C-Music ---\n";
         std::cout << "-----------------\n";
-        std::cout << "Made by: Alons Fejzo, Riseld Logu & Tedi Sina\n";
+        std::cout << "Made by: Alons Fejzo, Ersi Mansaku, Riseld Logu & Tedi Sina\n";
         std::cout << "-----------------\n";
         std::cout << "Select an option:\n";
         std::cout << "1. Add Song\n";
