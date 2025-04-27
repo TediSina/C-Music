@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <cstdlib>
+#include <ctime>
 
 class Song {
 public:
@@ -84,6 +86,7 @@ private:
 public:
     MusicLibrary() {
         loadSongs();
+        std::srand(std::time(0));
     }
 
     ~MusicLibrary() {
@@ -173,7 +176,7 @@ public:
         }
 
         if (!found) {
-            std::cout << "No songs found for the selected genre.\n";
+            std::cout << "\nNo songs found for the selected genre.\n";
         }
     }
 
@@ -190,6 +193,19 @@ public:
             return;
         }
         songs[choice - 1]->play();
+    }
+
+    void playRandomSong() const {
+        if (songs.empty()) {
+            std::cout << "\nNo songs in the library.\n";
+            return;
+        }
+        int randomIndex = std::rand() % songs.size();
+        std::cout << "\nPlaying random song:\n";
+        std::cout << randomIndex << ". ";
+        songs[randomIndex]->display();
+        std::cout << std::endl;
+        songs[randomIndex]->play();
     }
 
     void deleteSong() {
@@ -270,8 +286,9 @@ int main() {
         std::cout << "2. List All Songs\n";
         std::cout << "3. List Songs by Genre\n";
         std::cout << "4. Play Song\n";
-        std::cout << "5. Delete Song\n";
-        std::cout << "6. Exit\n";
+        std::cout << "5. Play Random Song\n";
+        std::cout << "6. Delete Song\n";
+        std::cout << "7. Exit\n";
         std::cout << "Enter choice: ";
         std::cin >> choice;
 
@@ -289,15 +306,18 @@ int main() {
             library.playSong();
             break;
         case 5:
-            library.deleteSong();
+            library.playRandomSong();
             break;
         case 6:
+            library.deleteSong();
+            break;
+        case 7:
             std::cout << "\nGoodbye!\n";
             break;
         default:
             std::cout << "\nInvalid option.\n";
         }
-    } while (choice != 6);
+    } while (choice != 7);
 
     return 0;
 }
